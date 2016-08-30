@@ -44,7 +44,7 @@
                 </form>
             </field>
         </record>
-
+        <!--course列表 list-->
         <record model="ir.ui.view" id="course_tree_view">
             <field name="name">course.tree</field>
             <field name="model">openacademy.course</field>
