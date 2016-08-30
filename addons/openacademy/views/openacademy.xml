@@ -12,7 +12,7 @@
                 </search>
             </field>
         </record>
-
+        <!--给列表添加样式-->
         <record model="ir.ui.view" id="course_form_view">
             <field name="name">course.form</field>
             <field name="model">openacademy.course</field>
@@ -22,18 +22,39 @@
                         <group>
                             <field name="name"/>
                             <!--<field name="description"/>-->
+                            <field name="responsible_id"/>
                         </group>
                         <notebook> <!--把 描述 和 关于 都放到一个notebook里面-->
                             <page string="描述">
                                 <field name="description"/>
                             </page>
+                            <page string="Sessions">
+                                <field name="session_ids">
+                                    <tree string="Registered sessions">
+                                        <field name="name"/>
+                                        <field name="instructor_id"/>
+                                    </tree>
+                                </field>
+                            </page>
                             <page string="关于">
-                                This is a example of notebooks
+                                连爱科技出品
                             </page>
                         </notebook>
                     </sheet>
                 </form>
             </field>
+        </record>
+
+        <record model="ir.ui.view" id="course_tree_view">
+            <field name="name">course.tree</field>
+            <field name="model">openacademy.course</field>
+            <field name="arch" type="xml">
+                <tree string="Course Tree">
+                    <field name="name"/>
+                    <field name="responsible_id"/>
+                </tree>
+            </field>
+
         </record>
 
 
@@ -57,14 +78,74 @@
         <!-- top level menu: no parent 左上角显示应用的名称-->
         <menuitem id="main_openacademy_menu" name="Open Academy"/>
         <!-- A first level in the left side menu is needed
-             before using action= attribute SlideMenu的父item-->
+             before using action= attribute SlideMenu的父item 经过测试只能有一个-->
         <menuitem id="openacademy_menu" name="Open Academy" parent="main_openacademy_menu"/>
         <!-- the following menuitem should appear *after*
              its parent openacademy_menu and *after* its
              action course_list_action -->
         <!---->
-        <menuitem id="course_menu1" name="Course一" parent="openacademy_menu" action="course_list_action"/>
-        <menuitem id="course_menu2" name="Course二" parent="openacademy_menu" action="course_list_action"/>
+        <menuitem id="course_menu1" name="Course" parent="openacademy_menu" action="course_list_action"/>
         <!-- Full id location:action="openacademy.course_list_action" It is not required when it is the same module -->
+
+
+
+        <!--session的view展示图-->
+        <record model="ir.ui.view" id="session_form_view">
+            <field name="name">session.form</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <form string="Session Form">
+                    <sheet>
+                        <group string="General">
+                            <field name="course_id"/>
+                            <field name="name"/>
+                            <field name="instructor_id"/>
+                        </group>
+                        <group string="Schedule">
+                            <field name="start_data"/>
+                            <field name="duration"/>
+                            <field name="seats"/>
+                        </group>
+                        <label for="attendee_ids"/>
+                        <field name="attendee_ids"/>
+                        <!--<notebook> &lt;!&ndash;把 描述 和 关于 都放到一个notebook里面&ndash;&gt;-->
+                            <!--<page string="开始时间">-->
+                                <!--<field name="start_data"/>-->
+                            <!--</page>-->
+                            <!--<page string="与会时间">-->
+                                <!--<field name="duration"/>-->
+                            <!--</page>-->
+                            <!--<page string="座位">-->
+                                <!--<field name="seats"/>-->
+                            <!--</page>-->
+                            <!--<page string="关于">-->
+                                <!--连爱科技出品-->
+                            <!--</page>-->
+                        <!--</notebook>-->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- session tree/list view -->
+        <record model="ir.ui.view" id="session_tree_view">
+            <field name="name">session.tree</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <tree string="Session Tree">
+                    <field name="name"/>
+                    <field name="course_id"/>
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="session_list_action">
+            <field name="name">Sessions</field>
+            <field name="res_model">openacademy.session</field>
+            <field name="view_type">form</field>
+            <field name="view_model">tree,form</field>
+        </record>
+
+        <menuitem id="session_menu" name="Sessions" parent="openacademy_menu" action="session_list_action"/>
     </data>
 </openerp>
