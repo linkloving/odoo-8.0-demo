@@ -26,7 +26,8 @@
     'data': [
         # 'security/ir.model.access.csv',
         'templates.xml',
-        'views/openacademy.xml'
+        'views/openacademy.xml',  # 添加一个openacademy
+        'views/partner.xml'  # 添加一个partner
     ],
     # only loaded in demonstration mode
     'demo': [

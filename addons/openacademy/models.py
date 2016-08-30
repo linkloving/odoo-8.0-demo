@@ -30,5 +30,5 @@ class Session(models.Model):
     instructor_id = fields.Many2one('res.partner', string="Instructor")
     # 每个session只能有一个Course
     course_id = fields.Many2one('openacademy.course', ondelte='cadcade', string="Course", required=True)
-    # 每个session只能有多个参与者 每个参与者也可以参加其他session
+    # 每个session有多个参与者 每个参与者也可以参加其他session
     attendee_ids = fields.Many2many('res.partner', string="参与者")

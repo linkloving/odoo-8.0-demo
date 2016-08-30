@@ -3,7 +3,7 @@
     <data>
         <!--添加右上角的搜索栏-->
         <record model="ir.ui.view" id="course_search_view">
-            <field name="name">搜索</field>
+            <field name="name">course.search</field>
             <field name="model">openacademy.course</field>
             <field name="arch" type="xml">
                 <search>
