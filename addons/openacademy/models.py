@@ -5,6 +5,7 @@ from openerp import models, fields, api
 
 # 其view层的展示在openacademy.xml
 class Course(models.Model):
+    # 该模型的名字
     _name = 'openacademy.course'
     '''
     string 是在UI上显示的标题 若不设置则默认为声明的变量（例如'description'）
@@ -27,7 +28,8 @@ class Session(models.Model):
     duration = fields.Float(digits=(6, 2), help="Duration in days")
     seats = fields.Integer(string="座位号")
     # 每个session只能有一个Instructor
-    instructor_id = fields.Many2one('res.partner', string="Instructor", domain=[('instructor', '=', True)])
+    instructor_id = fields.Many2one('res.partner', string="Instructor", domain=[('instructor', '=', True),
+                                                                                ('category_id.name', 'ilike', "Teacher")])
     # 每个session只能有一个Course
     course_id = fields.Many2one('openacademy.course', ondelte='cadcade', string="Course", required=True)
     # 每个session有多个参与者 每个参与者也可以参加其他session

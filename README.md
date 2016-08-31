@@ -39,4 +39,5 @@ To fetch odoo merge pull requests refs use this command:
 
 
     http://www.odooo2o.com/ odoo开发
+    http://www.chinamaker.net/html/2014/study_1027/176.html ODOO OpenERP  8.0 开发基础教程连载
 
