@@ -27,7 +27,7 @@ class Session(models.Model):
     duration = fields.Float(digits=(6, 2), help="Duration in days")
     seats = fields.Integer(string="座位号")
     # 每个session只能有一个Instructor
-    instructor_id = fields.Many2one('res.partner', string="Instructor")
+    instructor_id = fields.Many2one('res.partner', string="Instructor", domain=[('instructor', '=', True)])
     # 每个session只能有一个Course
     course_id = fields.Many2one('openacademy.course', ondelte='cadcade', string="Course", required=True)
     # 每个session有多个参与者 每个参与者也可以参加其他session

@@ -85,6 +85,8 @@
              action course_list_action -->
         <!---->
         <menuitem id="course_menu1" name="Course" parent="openacademy_menu" action="course_list_action"/>
+        <menuitem id="sub_course_menu" name="SubCourse" parent="course_menu1" action="course_list_action"/>
+
         <!-- Full id location:action="openacademy.course_list_action" It is not required when it is the same module -->
 
 
