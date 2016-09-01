@@ -91,7 +91,7 @@
 
 
 
-        <!--session的view展示图-->
+        <!--session(课程具体明细)的view展示图-->
         <record model="ir.ui.view" id="session_form_view">
             <field name="name">session.form</field>
             <field name="model">openacademy.session</field>
@@ -102,42 +102,46 @@
                             <field name="course_id"/>
                             <field name="name"/>
                             <field name="instructor_id"/>
+                            <!--<field name="active"/>-->
                         </group>
                         <group string="Schedule">
-                            <field name="start_data"/>
+                            <field name="end_date"/>
                             <field name="duration"/>
                             <field name="seats"/>
+                            <field name="taken_seats" widget="progressbar"/>
                         </group>
                         <label for="attendee_ids"/>
                         <field name="attendee_ids"/>
-                        <!--<notebook> &lt;!&ndash;把 描述 和 关于 都放到一个notebook里面&ndash;&gt;-->
-                            <!--<page string="开始时间">-->
-                                <!--<field name="start_data"/>-->
-                            <!--</page>-->
-                            <!--<page string="与会时间">-->
-                                <!--<field name="duration"/>-->
-                            <!--</page>-->
-                            <!--<page string="座位">-->
-                                <!--<field name="seats"/>-->
-                            <!--</page>-->
-                            <!--<page string="关于">-->
-                                <!--连爱科技出品-->
-                            <!--</page>-->
-                        <!--</notebook>-->
                     </sheet>
                 </form>
             </field>
         </record>
 
-        <!-- session tree/list view -->
+        <!-- session(课程列表) tree/list view -->
         <record model="ir.ui.view" id="session_tree_view">
             <field name="name">session.tree</field>
             <field name="model">openacademy.session</field>
             <field name="arch" type="xml">
-                <tree string="Session Tree">
+                <!--给Tree view设置属性：少于5天的是蓝色 持续15天的是红色-->
+                <tree string="Session Tree"
+                      colors="#0000ff:duration&lt;5;
+                      red:duration&gt;15">
                     <field name="name"/>
                     <field name="course_id"/>
+                    <field name="duration" invisible="0"/>
+                    <field name="taken_seats" widget="progressbar"/>
                 </tree>
+            </field>
+        </record>
+
+        <!-- calendar view -->
+        <record model="ir.ui.view" id="session_calendar_view">
+            <field name="name">session.calendar</field>
+            <field name="model">openacademy.session</field>
+            <field name="arch" type="xml">
+                <calendar  string="session calendar" date_start="start_date" date_stop="end_date" color="instructor_id">
+                    <field name="name"/>
+                </calendar>
             </field>
         </record>
 
@@ -145,7 +149,7 @@
             <field name="name">Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
-            <field name="view_model">tree,form</field>
+            <field name="view_model">tree,form,calendar</field>
         </record>
 
         <menuitem id="session_menu" name="Sessions" parent="openacademy_menu" action="session_list_action"/>
