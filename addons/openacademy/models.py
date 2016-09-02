@@ -54,7 +54,7 @@ class Session(models.Model):
     _name = 'openacademy.session'
 
     name = fields.Char(string="Session Title", required=True)
-    start_date = fields.Date(string="开课时间", default=fields.Date.today)
+    start_date = fields.Date(string="开课时间", )
     # digits(6 ,2) 共6位 小数点后只有2位
     duration = fields.Float(digits=(6, 2), help="Duration in days")
 
@@ -73,7 +73,9 @@ class Session(models.Model):
 
     taken_seats = fields.Float(string="Taken seats", compute='_taken_seats')
 
-    end_date = fields.Date(string="End Date", store=True, compute='_get_end_date',
+    end_date = fields.Date(string="End Date",
+                           store=True,
+                           compute='_get_end_date',
                            inverse='_set_end_date')
 
     @api.depends('start_date', 'duration')
@@ -83,6 +85,8 @@ class Session(models.Model):
                 r.end_date = r.start_date
                 continue
 
+            # Add duration to start_date, but: Monday + 5 days = Saturday, so
+            # subtract one second to get on Friday instead
             start = fields.Datetime.from_string(r.start_date)
             duration = timedelta(days=r.duration, seconds=-1)
             r.end_date = start + duration
@@ -92,6 +96,8 @@ class Session(models.Model):
             if not (r.start_date and r.end_date):
                 continue
 
+            # Compute the difference between dates, but: Friday - Monday = 4 days,
+            # so add one day to get 5 days instead
             start_date = fields.Datetime.from_string(r.start_date)
             end_date = fields.Datetime.from_string(r.end_date)
             r.duration = (end_date - start_date).days + 1
@@ -134,3 +140,21 @@ class Session(models.Model):
         for r in self:
             if r.instructor_id and r.instructor_id in r.attendee_ids:
                 raise  exceptions.ValidationError('老师不能作为课程的学生')
+
+    state = fields.Selection([
+        ('draft', "草稿"),
+        ('confirmed', "确认"),
+        ('done', "完成")])
+
+    @api.multi
+    def action_draft(self):
+        self.state = 'draft'
+
+    @api.multi
+    def action_confirm(self):
+        self.state = 'confirmed'
+        print '点击确认了 self.state：', self.state
+
+    @api.multi
+    def action_done(self):
+        self.state = 'done'

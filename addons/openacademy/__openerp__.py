@@ -30,7 +30,8 @@
         # 'security/ir.model.access.csv',
         'templates.xml',
         'views/openacademy.xml',  # 添加一个openacademy
-        'views/partner.xml'  # 添加一个partner
+        'views/partner.xml',  # 添加一个partner
+        'views/session_workflow.xml',
     ],
 
     # only loaded in demonstration mode
